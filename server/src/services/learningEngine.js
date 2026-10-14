@@ -36,7 +36,7 @@ const conceptRules = [
     explanation: 'You are narrowing options using rules, which Python can express with comparisons and filters.'
   },
   {
-    keywords: ['fail', 'error', 'crash', 'except', 'try', 'unexpected', 'problem', 'handle', 'exception', 'invalid', 'balance'],
+    keywords: ['fail', 'error', 'crash', 'except', 'try', 'unexpected', 'problem', 'handle', 'exception', 'invalid', 'balance', 'payment'],
     pattern: 'Exception handling',
     pythonConcept: 'try / except',
     explanation: 'You identified that an operation can fail unexpectedly, which maps to catching runtime errors using try/except.'
@@ -61,7 +61,7 @@ function generateCode(scenario, maps) {
   const hasTryExcept = concepts.includes('try') || concepts.includes('except') || scenario?.concepts?.includes('exception handling');
 
   if (hasTryExcept) {
-    return 'payment_amount = 500\naccount_balance = 300\n\ntry:\n    if payment_amount > account_balance:\n        raise ValueError("Insufficient balance")\n\n    print("Payment successful")\n\nexcept ValueError as error:\n    print("Payment failed:", error)';
+    return 'payment_amount = 420\naccount_balance = 300\n\ntry:\n    if payment_amount > account_balance:\n        raise ValueError("Insufficient balance")\n\n    print("Payment successful")\n\nexcept ValueError as error:\n    print("Payment failed:", error)';
   }
 
   if (hasLoop && hasCondition) {

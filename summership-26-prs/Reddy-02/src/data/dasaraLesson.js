@@ -566,46 +566,32 @@ finally:
       },
     ],
   },
+];
 
-  /* ══════════════════════════════════════
-     CHAPTER 9 — COMPLETION
-  ══════════════════════════════════════ */
+export const CONCEPTS_SUMMARY = [
   {
-    id: 'completion',
-    type: 'completion',
-    chapterNum: 9,
-    title: 'Your Journey Is Complete',
-    narration:
-      'Congratulations. You have completed the Dasara Festival Discovery Lab. You can now explain what an exception is, identify a ValueError and a KeyError, write try and except blocks, and explain the role of else and finally. Like Vijayadashami itself — a day that follows nine nights of effort — your understanding of Python exception handling is now earned.',
-    completionMessage:
-      'You have learned to anticipate exceptions, handle unexpected inputs, and guide your program toward a graceful outcome.',
-    conceptsSummary: [
-      {
-        keyword: 'Exception',
-        definition: 'A runtime signal that something unexpected happened and normal execution cannot continue.',
-      },
-      {
-        keyword: 'ValueError',
-        definition: 'Raised when a value is the wrong type for an operation — such as int("nine").',
-      },
-      {
-        keyword: 'KeyError',
-        definition: 'Raised when a dictionary is accessed with a key that does not exist.',
-      },
-      {
-        keyword: 'try / except',
-        definition: 'Attempt code in try; handle specific exceptions in except.',
-      },
-      {
-        keyword: 'else',
-        definition: 'Runs only when the try block completed without any exception.',
-      },
-      {
-        keyword: 'finally',
-        definition: 'Always runs — whether an exception occurred or not. Used for cleanup.',
-      },
-    ],
-    actions: ['Review Concepts', 'Replay Journey', 'Return to PyBe'],
+    keyword: 'Exception',
+    definition: 'A runtime signal that something unexpected happened and normal execution cannot continue.',
+  },
+  {
+    keyword: 'ValueError',
+    definition: 'Raised when a value is the wrong type for an operation — such as int("nine").',
+  },
+  {
+    keyword: 'KeyError',
+    definition: 'Raised when a dictionary is accessed with a key that does not exist.',
+  },
+  {
+    keyword: 'try / except',
+    definition: 'Attempt code in try; handle specific exceptions in except.',
+  },
+  {
+    keyword: 'else',
+    definition: 'Runs only when the try block completed without any exception.',
+  },
+  {
+    keyword: 'finally',
+    definition: 'Always runs — whether an exception occurred or not. Used for cleanup.',
   },
 ];
 

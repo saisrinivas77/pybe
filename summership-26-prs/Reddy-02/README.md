@@ -41,8 +41,7 @@ Neither narrative is presented as exclusive or superior; both are framed as refl
 | **5** | **Rama's Journey** | `KeyError` & Dictionary lookups | Dictionary challenge + 3 recovery strategies tab |
 | **6** | **Day of Victory** | `try / except / else / finally` | Fill-in-the-blanks code challenge + dual-path trace |
 | **7** | **Interactive Code Lab** | Exception Sandbox | 3 deterministic Python sandboxes with input chips |
-| **8** | **Final Assessment** | Comprehensive Quiz | 5 questions, instant feedback, retry, score tracking |
-| **9** | **Completion Celebration** | Vijayadashami Certificate | Personalized Certificate of Mastery, Print view, Cheat Sheet |
+| **8** | **Final Assessment & Reference** | Comprehensive Quiz & Concepts | 5 questions, instant feedback, retry, and Exception Cheat Sheet |
 
 ---
 

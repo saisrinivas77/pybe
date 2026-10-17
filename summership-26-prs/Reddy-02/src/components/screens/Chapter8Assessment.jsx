@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { sound } from '../../services/soundEngine.js';
+import { CONCEPTS_SUMMARY } from '../../data/dasaraLesson.js';
 
-export default function Chapter8Assessment({ chapter, onAssessmentComplete, savedAnswers }) {
+export default function Chapter8Assessment({ chapter, onAssessmentComplete, savedAnswers, onRestart }) {
   const [userAnswers, setUserAnswers] = useState(savedAnswers || {});
   const [submitted, setSubmitted] = useState(false);
 
@@ -55,7 +56,7 @@ export default function Chapter8Assessment({ chapter, onAssessmentComplete, save
           <span className="screen-eyebrow">{chapter.eyebrow}</span>
           <h2 id="chapter8-heading" className="screen-title">{chapter.title}</h2>
           <p className="screen-lead">
-            Demonstrate your mastery of Python exception handling. Answer all 5 questions below ({passMark}/5 required to earn your Vijayadashami Certificate).
+            Demonstrate your mastery of Python exception handling. Answer all 5 questions below ({passMark}/5 required to pass).
           </p>
         </header>
 
@@ -100,7 +101,7 @@ export default function Chapter8Assessment({ chapter, onAssessmentComplete, save
                         role="radio"
                         aria-checked={isSelected}
                         disabled={submitted}
-                        className={`quiz-option-btn ${isSelected ? 'opt-selected' : ''} ${optClass}`}
+                        className={`quiz-option-btn ${isSelected ? 'opt-selected' : ''}`}
                         onClick={() => handleSelectOption(q.id, opt.id)}
                       >
                         <span className="opt-letter">{opt.id.toUpperCase()}</span>
@@ -148,7 +149,7 @@ export default function Chapter8Assessment({ chapter, onAssessmentComplete, save
                   </h3>
                   <p className="results-desc">
                     {passed
-                      ? 'You have earned the Vijayadashami Certificate of Mastery! Proceed to Chapter 9 for the final victory celebration.'
+                      ? 'You have successfully completed the Dasara Festival Discovery Lab! Review the key concepts reference below.'
                       : 'Review the explanations above and retry the questions you missed.'}
                   </p>
                 </div>
@@ -157,9 +158,29 @@ export default function Chapter8Assessment({ chapter, onAssessmentComplete, save
                 <button className="btn btn-secondary" onClick={handleRetry}>
                   🔄 Retry Assessment
                 </button>
+                {passed && onRestart && (
+                  <button className="btn btn-primary" onClick={onRestart}>
+                    🔄 Replay Lab
+                  </button>
+                )}
               </div>
             </div>
           )}
+        </div>
+
+        {/* Concept Reference Cheat Sheet */}
+        <div className="cheat-sheet-card">
+          <h3 className="cheat-sheet-title">📜 Exception Handling Reference Cheat Sheet</h3>
+          <div className="cheat-grid">
+            {CONCEPTS_SUMMARY.map((item, idx) => (
+              <div key={idx} className="cheat-item">
+                <div className="cheat-header">
+                  <code className="cheat-keyword">{item.keyword}</code>
+                </div>
+                <p className="cheat-def">{item.definition}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -7,7 +7,7 @@
  * ─────────────────────────────────────────────────────────────────
  */
 
-import { MODULE_META, CHAPTERS, CHAPTER_ORDER, getChapter } from '../src/data/dasaraLesson.js';
+import { MODULE_META, CHAPTERS, CHAPTER_ORDER, getChapter, CONCEPTS_SUMMARY } from '../src/data/dasaraLesson.js';
 
 let passedTests = 0;
 let failedTests = 0;
@@ -35,10 +35,10 @@ assert(MODULE_META.author.includes('Vicharanashala'), 'Author metadata reference
 
 // ── Test Suite 2: Chapters Structure & Schema ──
 console.log('\n[Suite 2: Chapters Structure & Ordering]');
-assert(CHAPTERS.length === 10, 'Module contains exactly 10 chapters (0 through 9)');
-assert(CHAPTER_ORDER.length === 10, 'CHAPTER_ORDER contains 10 chapter IDs');
+assert(CHAPTERS.length === 9, 'Module contains exactly 9 chapters (0 through 8)');
+assert(CHAPTER_ORDER.length === 9, 'CHAPTER_ORDER contains 9 chapter IDs');
 assert(CHAPTERS[0].id === 'opening', 'Chapter 0 is the opening hero screen');
-assert(CHAPTERS[9].id === 'completion', 'Chapter 9 is the completion victory celebration');
+assert(CHAPTERS[8].id === 'assessment', 'Chapter 8 is the final assessment');
 
 CHAPTERS.forEach((ch, idx) => {
   assert(ch.chapterNum === idx, `Chapter at index ${idx} has chapterNum === ${idx}`);
@@ -108,10 +108,8 @@ ch8.questions.forEach((q, i) => {
   assert(typeof q.explanation === 'string' && q.explanation.length > 10, `Question ${i + 1} has explanation`);
 });
 
-// Chapter 9: Completion
-const ch9 = getChapter('completion');
-assert(ch9 !== undefined, 'Chapter 9 completion exists');
-assert(ch9.conceptsSummary.length >= 6, 'Chapter 9 provides cheat sheet with at least 6 concepts');
+// Concepts Summary Check
+assert(CONCEPTS_SUMMARY.length >= 6, 'Module provides concepts cheat sheet with at least 6 concepts');
 
 // ── Test Suite 4: Simulation & Logic Correctness ──
 console.log('\n[Suite 4: Simulation & Logic Correctness]');

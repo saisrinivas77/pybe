@@ -15,7 +15,6 @@ import Chapter5RamaJourney from './components/screens/Chapter5RamaJourney.jsx';
 import Chapter6Vijayadashami from './components/screens/Chapter6Vijayadashami.jsx';
 import Chapter7CodeLab from './components/screens/Chapter7CodeLab.jsx';
 import Chapter8Assessment from './components/screens/Chapter8Assessment.jsx';
-import Chapter9Completion from './components/screens/Chapter9Completion.jsx';
 
 export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -216,13 +215,6 @@ export default function App() {
             chapter={currentChapter}
             savedAnswers={assessmentResult?.userAnswers}
             onAssessmentComplete={(res) => setAssessmentResult(res)}
-          />
-        )}
-
-        {currentIndex === 9 && (
-          <Chapter9Completion
-            chapter={currentChapter}
-            assessmentScore={assessmentResult}
             onRestart={() => goToChapter(0)}
           />
         )}

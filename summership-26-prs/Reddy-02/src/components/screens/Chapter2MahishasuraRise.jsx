@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { sound } from '../../services/soundEngine.js';
 
-export default function Chapter2MahishasuraRise({ chapter, onAnswerSelected, selectedAnswer }) {
+export default function Chapter2MahishasuraRise({ chapter, onAnswerSelected, selectedAnswer, onContinue }) {
   const [selected, setSelected] = useState(selectedAnswer || null);
 
   const handleSelect = (id) => {
@@ -14,52 +14,36 @@ export default function Chapter2MahishasuraRise({ chapter, onAnswerSelected, sel
     if (onAnswerSelected) onAnswerSelected(id);
   };
 
+  const isBest = selected === chapter.scenePrediction.bestAnswer;
+
   return (
     <section className="screen screen-challenge" aria-labelledby="chapter2-heading">
-      <div className="content-container">
-        <header className="screen-header">
-          <span className="screen-eyebrow">{chapter.eyebrow}</span>
-          <h2 id="chapter2-heading" className="screen-title">{chapter.title}</h2>
+      <div className="pybe-single-column">
+        <header className="pybe-header-centered">
+          <h2 id="chapter2-heading" className="pybe-story-title">
+            Think it through
+          </h2>
+          <span className="pybe-progress-label">
+            {selected ? '1 OF 1 ANSWERED' : '0 OF 1 ANSWERED'}
+          </span>
         </header>
 
-        {/* Narrative & Allegory Card */}
-        <div className="narrative-card">
-          <div className="narrative-badge">
-            <span className="badge-icon">🐃</span>
-            <span>The Allegory: Boon of Invulnerability</span>
+        {/* Question Card */}
+        <div className="pybe-card pybe-question-card">
+          <div className="question-title-row">
+            <span className="question-num-circle">1</span>
+            <h3 className="question-text">{chapter.scenePrediction.prompt}</h3>
           </div>
-          <div className="narrative-body">
-            {chapter.story.split('\n\n').map((paragraph, idx) => (
-              <p key={idx}>{paragraph}</p>
-            ))}
-          </div>
-        </div>
 
-        {/* The Connection Box */}
-        <div className="analogy-banner">
-          <span className="analogy-icon">💡</span>
-          <div className="analogy-text">
-            <strong>The Software Parallels:</strong>
-            <p>
-              Just like Mahishasura assumed no one could ever defeat him, an unprepared programmer assumes:
-              <em> &ldquo;The user will always type a clean number. The data key will always exist. Nothing will ever go wrong.&rdquo;</em>
-            </p>
-          </div>
-        </div>
-
-        {/* Interactive Prediction Challenge */}
-        <div className="interactive-challenge-card" role="region" aria-label="Prediction question">
-          <h3 className="challenge-question-title">{chapter.scenePrediction.prompt}</h3>
-
-          <div className="options-grid" role="radiogroup">
+          <div className="pybe-options-list" role="radiogroup">
             {chapter.scenePrediction.options.map((opt) => {
               const isChosen = selected === opt.id;
-              const isBest = opt.id === chapter.scenePrediction.bestAnswer;
+              const isOptionBest = opt.id === chapter.scenePrediction.bestAnswer;
               let statusClass = '';
               if (selected) {
-                if (isChosen && isBest) statusClass = 'option-correct';
-                else if (isChosen && !isBest) statusClass = 'option-wrong';
-                else if (isBest) statusClass = 'option-revealed-best';
+                if (isChosen && isOptionBest) statusClass = 'pybe-opt-correct';
+                else if (isChosen && !isOptionBest) statusClass = 'pybe-opt-wrong';
+                else if (isOptionBest) statusClass = 'pybe-opt-reveal';
               }
 
               return (
@@ -67,29 +51,64 @@ export default function Chapter2MahishasuraRise({ chapter, onAnswerSelected, sel
                   key={opt.id}
                   role="radio"
                   aria-checked={isChosen}
-                  className={`option-btn ${statusClass} ${isChosen ? 'selected' : ''}`}
+                  className={`pybe-option-row ${statusClass}`}
                   onClick={() => handleSelect(opt.id)}
                 >
-                  <span className="option-letter">{opt.id.toUpperCase()}</span>
-                  <span className="option-text">{opt.text}</span>
-                  {selected && isBest && <span className="option-badge">✨ Ideal Answer</span>}
+                  <span className="option-label-text">{opt.text}</span>
+                  {selected && isChosen && isOptionBest && <span className="check-icon">✓</span>}
                 </button>
               );
             })}
           </div>
 
-          {/* Feedback Display */}
+          {/* Feedback Box */}
           {selected && (
-            <div className={`feedback-card ${selected === chapter.scenePrediction.bestAnswer ? 'feedback-positive' : 'feedback-caution'}`}>
-              <div className="feedback-header">
-                <strong>
-                  {selected === chapter.scenePrediction.bestAnswer ? '🎯 Excellent insight!' : '🔍 Consider this perspective:'}
-                </strong>
-              </div>
+            <div className={`pybe-feedback-box ${isBest ? 'feedback-correct' : 'feedback-hint'}`}>
+              <span className="feedback-status-title">
+                {isBest ? '✓ Correct' : '💡 Notice:'}
+              </span>
               <p>{chapter.scenePrediction.explanations[selected]}</p>
             </div>
           )}
         </div>
+
+        {/* Discovery Reveal Card (PyBe style) */}
+        {selected && (
+          <div className="pybe-discovery-reveal fade-in">
+            <h3 className="reveal-heading">Here&rsquo;s what you just figured out.</h3>
+            <p className="reveal-subtext">
+              Programs crash when they assume input will always be valid. We need a safety shield to catch surprises.
+            </p>
+
+            <div className="reveal-cards-row">
+              <div className="reveal-card">
+                <span className="reveal-icon">⚡</span>
+                <span className="reveal-tag">UNEXPECTED EVENT</span>
+                <strong className="reveal-val">Visitor types invalid data</strong>
+              </div>
+
+              <span className="reveal-arrow">&rarr;</span>
+
+              <div className="reveal-card">
+                <span className="reveal-icon">🛡️</span>
+                <span className="reveal-tag">SAFETY SHIELD</span>
+                <strong className="reveal-val">Catch &amp; respond gracefully</strong>
+              </div>
+            </div>
+
+            <div className="reveal-action-center">
+              <button
+                className="btn btn-primary btn-lg"
+                onClick={() => {
+                  sound.playSuccess();
+                  if (onContinue) onContinue();
+                }}
+              >
+                See how Python handles this &rarr;
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

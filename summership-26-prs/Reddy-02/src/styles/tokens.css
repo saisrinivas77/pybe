@@ -1,44 +1,60 @@
 /* ============================================================
-   DASARA DISCOVERY LAB — DESIGN TOKENS
-   Festival-inspired palette with Apple-influenced clarity
+   PYBE DISCOVERY LAB — LIGHT DESIGN TOKENS
+   Inspired by PyBe (https://pybe-discovery.vercel.app)
+   Warm ivory aesthetic, clean cards, forest green actions
    ============================================================ */
 
 :root {
-  /* ── Dasara colour palette ── */
-  --clr-maroon:        #35151D;   /* Midnight maroon — primary background */
-  --clr-maroon-mid:    #4A1F28;   /* Mid maroon for surfaces */
-  --clr-maroon-light:  #621E2A;   /* Lighter maroon for cards */
-  --clr-vermilion:     #B83A32;   /* Deep vermilion — danger / error accent */
-  --clr-vermilion-dim: #8C2B25;   /* Muted vermilion for hover states */
-  --clr-saffron:       #E8A64A;   /* Muted saffron — active / primary accent */
-  --clr-saffron-dim:   #C98A35;   /* Dimmer saffron for borders */
-  --clr-saffron-glow:  rgba(232,166,74,0.18);
-  --clr-gold:          #C8A45D;   /* Antique gold — headings, icons */
-  --clr-gold-dim:      #A8874A;   /* Dimmer gold */
-  --clr-ivory:         #FFF7E9;   /* Warm ivory — primary text on dark */
-  --clr-ivory-dim:     #EDE0C8;   /* Secondary text */
-  --clr-ivory-muted:   #C8B99A;   /* Tertiary / captions */
-  --clr-charcoal:      #24201F;   /* Charcoal — text on light surfaces */
-  --clr-green-muted:   #536B50;   /* Muted green — success states */
-  --clr-green-glow:    rgba(83,107,80,0.20);
+  /* ── PyBe Warm Light Colour Palette ── */
+  --clr-bg:             #FAF7EE;   /* Warm ivory / cream page background */
+  --clr-surface:        #FFFFFF;   /* Clean white for main cards */
+  --clr-surface-raise:  #F7F2E7;   /* Soft sand for inner cards & wells */
+  --clr-surface-code:   #F6F0DC;   /* Warm parchment code sandbox background */
+  
+  /* ── Borders ── */
+  --clr-border:         #E6DFD3;   /* Gentle warm border */
+  --clr-border-subtle:  #EFE9DF;   /* Lighter divider border */
+  --clr-border-focus:   #279149;   /* Green focus ring */
 
-  /* Semantic aliases */
-  --clr-bg:            var(--clr-maroon);
-  --clr-surface:       var(--clr-maroon-mid);
-  --clr-surface-raise: var(--clr-maroon-light);
-  --clr-text-primary:  var(--clr-ivory);
-  --clr-text-secondary:var(--clr-ivory-dim);
-  --clr-text-muted:    var(--clr-ivory-muted);
-  --clr-accent:        var(--clr-saffron);
-  --clr-accent-alt:    var(--clr-gold);
-  --clr-success:       var(--clr-green-muted);
-  --clr-error:         var(--clr-vermilion);
-  --clr-focus:         var(--clr-saffron);
+  /* ── Text ── */
+  --clr-text-primary:   #252926;   /* Dark charcoal for high contrast reading */
+  --clr-text-secondary: #4A524D;   /* Slate charcoal for body copy */
+  --clr-text-muted:     #788079;   /* Muted captions & subtitles */
+  
+  /* ── Primary Action / PyBe Emerald Green ── */
+  --clr-accent:         #279149;   /* PyBe signature green for CTA buttons */
+  --clr-accent-hover:   #207D3E;   /* Darker green on hover */
+  --clr-accent-dim:     #EAF6ED;   /* Very soft green tint for active states */
+  --clr-accent-border:  #BBE3C7;
+
+  /* ── Cultural & Status Accents ── */
+  --clr-gold:           #B8860B;   /* Antique gold for cultural highlights */
+  --clr-gold-light:     #FEF7E8;   /* Soft gold tint */
+  --clr-saffron:        #D97706;   /* Warm festival saffron */
+  --clr-saffron-light:  #FFFBEB;
+  --clr-vermilion:      #D32F2F;   /* Error red */
+  --clr-vermilion-light:#FDF2F2;   /* Soft red background */
+  --clr-vermilion-border:#F5C6CB;
+  --clr-success:        #279149;
+  --clr-success-bg:     #EAF6ED;
+  --clr-error:          #D32F2F;
+  --clr-focus:          #279149;
+
+  /* Legacy variable mappings for compatibility */
+  --clr-maroon:         #FAF7EE;
+  --clr-maroon-mid:     #FFFFFF;
+  --clr-maroon-light:   #F7F2E7;
+  --clr-ivory:          #252926;
+  --clr-ivory-dim:      #4A524D;
+  --clr-ivory-muted:    #788079;
+  --clr-charcoal:       #FFFFFF;
+  --clr-saffron-glow:   rgba(39, 145, 73, 0.15);
+  --clr-green-glow:     rgba(39, 145, 73, 0.15);
 
   /* ── Typography ── */
-  --font-ui:    'Outfit', 'Inter', system-ui, sans-serif;
+  --font-ui:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-story: 'Lora', 'Georgia', serif;
-  --font-code:  'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  --font-code:  'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 
   --text-xs:   0.75rem;   /* 12px */
   --text-sm:   0.875rem;  /* 14px */
@@ -48,8 +64,8 @@
   --text-xl:   1.5rem;    /* 24px */
   --text-2xl:  1.875rem;  /* 30px */
   --text-3xl:  2.25rem;   /* 36px */
-  --text-4xl:  3rem;      /* 48px */
-  --text-5xl:  3.75rem;   /* 60px */
+  --text-4xl:  2.75rem;   /* 44px */
+  --text-5xl:  3.25rem;   /* 52px */
 
   --weight-light:   300;
   --weight-regular: 400;
@@ -57,10 +73,10 @@
   --weight-semi:    600;
   --weight-bold:    700;
 
-  --leading-tight:  1.2;
+  --leading-tight:  1.25;
   --leading-snug:   1.4;
   --leading-normal: 1.6;
-  --leading-loose:  1.8;
+  --leading-loose:  1.75;
 
   /* ── Spacing ── */
   --sp-1:  0.25rem;
@@ -73,44 +89,38 @@
   --sp-10: 2.5rem;
   --sp-12: 3rem;
   --sp-16: 4rem;
-  --sp-20: 5rem;
-  --sp-24: 6rem;
 
   /* ── Radii ── */
-  --radius-sm:  4px;
+  --radius-sm:  6px;
   --radius-md:  8px;
   --radius-lg:  12px;
   --radius-xl:  16px;
-  --radius-2xl: 24px;
+  --radius-2xl: 20px;
   --radius-full: 9999px;
 
-  /* ── Elevation / shadows ── */
-  --shadow-sm:  0 1px 4px rgba(0,0,0,0.3);
-  --shadow-md:  0 4px 16px rgba(0,0,0,0.4);
-  --shadow-lg:  0 8px 32px rgba(0,0,0,0.5);
-  --shadow-xl:  0 16px 48px rgba(0,0,0,0.6);
-  --shadow-glow-gold:    0 0 24px rgba(200,164,93,0.25);
-  --shadow-glow-saffron: 0 0 24px rgba(232,166,74,0.30);
-  --shadow-glow-success: 0 0 16px rgba(83,107,80,0.35);
-  --shadow-glow-error:   0 0 16px rgba(184,58,50,0.35);
+  /* ── Elevation / shadows (soft light shadows) ── */
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md:  0 4px 14px rgba(0, 0, 0, 0.06);
+  --shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-xl:  0 16px 36px rgba(0, 0, 0, 0.10);
+  --shadow-glow-gold:    0 0 16px rgba(184, 134, 11, 0.20);
+  --shadow-glow-saffron: 0 0 16px rgba(217, 119, 6, 0.20);
+  --shadow-glow-success: 0 0 16px rgba(39, 145, 73, 0.25);
+  --shadow-glow-error:   0 0 16px rgba(211, 47, 47, 0.20);
 
   /* ── Motion ── */
   --dur-instant:  80ms;
   --dur-fast:     150ms;
-  --dur-normal:   300ms;
-  --dur-slow:     500ms;
-  --dur-slower:   800ms;
-  --dur-scene:    600ms;
+  --dur-normal:   250ms;
+  --dur-slow:     400ms;
 
   --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-bounce:   cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-linear:   linear;
 
   /* ── Layout ── */
   --max-content: 760px;
-  --max-wide:    1100px;
-  --max-code:    900px;
+  --max-wide:    1040px;
+  --max-code:    860px;
 }
 
 /* Reduced-motion overrides */
@@ -119,7 +129,5 @@
     --dur-fast:   0ms;
     --dur-normal: 0ms;
     --dur-slow:   0ms;
-    --dur-slower: 0ms;
-    --dur-scene:  0ms;
   }
 }

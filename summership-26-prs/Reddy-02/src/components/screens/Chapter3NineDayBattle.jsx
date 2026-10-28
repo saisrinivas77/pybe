@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { sound } from '../../services/soundEngine.js';
 
-export default function Chapter3NineDayBattle({ chapter, onAnswerSelected, selectedAnswer }) {
+export default function Chapter3NineDayBattle({ chapter, onAnswerSelected, selectedAnswer, onContinue }) {
   const [selected, setSelected] = useState(selectedAnswer || null);
   const [activeStep, setActiveStep] = useState(null);
 
@@ -15,104 +15,114 @@ export default function Chapter3NineDayBattle({ chapter, onAnswerSelected, selec
     if (onAnswerSelected) onAnswerSelected(id);
   };
 
+  const isCorrect = selected === chapter.codeProblem.correctId;
+
   return (
     <section className="screen screen-concept" aria-labelledby="chapter3-heading">
-      <div className="content-container">
-        <header className="screen-header">
-          <span className="screen-eyebrow">{chapter.eyebrow}</span>
-          <h2 id="chapter3-heading" className="screen-title">{chapter.title}</h2>
+      <div className="pybe-single-column">
+        <header className="pybe-header-centered">
+          <h2 id="chapter3-heading" className="pybe-story-title">
+            What is a ValueError?
+          </h2>
+          <p className="pybe-lead">
+            The registration desk asks how many days remain. The visitor types the word <code>"nine"</code>.
+          </p>
         </header>
 
-        {/* Narrative Context */}
-        <div className="story-snippet-card">
-          <p>{chapter.story}</p>
+        {/* Code Block Card */}
+        <div className="pybe-card pybe-code-card">
+          <div className="code-header-bar">
+            <span className="code-filename">countdown.py</span>
+          </div>
+          <pre className="pybe-pre">
+            <code>{chapter.codeProblem.code}</code>
+          </pre>
         </div>
 
-        {/* Code Problem Display */}
-        <div className="code-challenge-layout">
-          <div className="code-viewer-panel">
-            <div className="code-viewer-header">
-              <span className="dot dot-red"></span>
-              <span className="dot dot-yellow"></span>
-              <span className="dot dot-green"></span>
-              <span className="code-filename">festival_countdown.py</span>
-            </div>
-            <pre className="code-pre">
-              <code>{chapter.codeProblem.code}</code>
-            </pre>
+        {/* Question Card */}
+        <div className="pybe-card pybe-question-card">
+          <div className="question-title-row">
+            <span className="question-num-circle">?</span>
+            <h3 className="question-text">{chapter.codeProblem.question}</h3>
           </div>
 
-          <div className="quiz-column">
-            <h3 className="challenge-prompt">{chapter.codeProblem.question}</h3>
-            <div className="options-list">
-              {chapter.codeProblem.options.map((opt) => {
-                const isChosen = selected === opt.id;
-                const isCorrect = opt.id === chapter.codeProblem.correctId;
-                let statusClass = '';
-                if (selected) {
-                  if (isChosen && isCorrect) statusClass = 'option-correct';
-                  else if (isChosen && !isCorrect) statusClass = 'option-wrong';
-                  else if (isCorrect) statusClass = 'option-revealed-best';
-                }
+          <div className="pybe-options-list" role="radiogroup">
+            {chapter.codeProblem.options.map((opt) => {
+              const isChosen = selected === opt.id;
+              const isOptionCorrect = opt.id === chapter.codeProblem.correctId;
+              let statusClass = '';
+              if (selected) {
+                if (isChosen && isOptionCorrect) statusClass = 'pybe-opt-correct';
+                else if (isChosen && !isOptionCorrect) statusClass = 'pybe-opt-wrong';
+                else if (isOptionCorrect) statusClass = 'pybe-opt-reveal';
+              }
 
-                return (
-                  <button
-                    key={opt.id}
-                    className={`option-btn ${statusClass} ${isChosen ? 'selected' : ''}`}
-                    onClick={() => handleSelect(opt.id)}
-                  >
-                    <span className="option-letter">{opt.id.toUpperCase()}</span>
-                    <span className="option-text">{opt.text}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {selected && (
-              <div className={`feedback-card ${selected === chapter.codeProblem.correctId ? 'feedback-positive' : 'feedback-caution'}`}>
-                <strong>{selected === chapter.codeProblem.correctId ? '✅ Correct!' : '💡 Let\'s break this down:'}</strong>
-                <p>{chapter.codeProblem.explanations[selected]}</p>
-              </div>
-            )}
+              return (
+                <button
+                  key={opt.id}
+                  role="radio"
+                  aria-checked={isChosen}
+                  className={`pybe-option-row ${statusClass}`}
+                  onClick={() => handleSelect(opt.id)}
+                >
+                  <span className="option-label-text">{opt.text}</span>
+                  {selected && isChosen && isOptionCorrect && <span className="check-icon">✓</span>}
+                </button>
+              );
+            })}
           </div>
+
+          {selected && (
+            <div className={`pybe-feedback-box ${isCorrect ? 'feedback-correct' : 'feedback-hint'}`}>
+              <span className="feedback-status-title">
+                {isCorrect ? '✓ Correct' : '💡 Explanation:'}
+              </span>
+              <p>{chapter.codeProblem.explanations[selected]}</p>
+            </div>
+          )}
         </div>
 
-        {/* Execution Trace Table */}
-        <div className="trace-card">
-          <h4 className="trace-title">Execution Trace — Why did execution stop?</h4>
-          <p className="trace-subtitle">Hover or tap each line to see Python's step-by-step runtime state:</p>
-          <div className="trace-rows">
-            {chapter.codeProblem.exceptionTrace.map((row) => (
-              <div
-                key={row.line}
-                className={`trace-row status-${row.status} ${activeStep === row.line ? 'row-focused' : ''}`}
-                onMouseEnter={() => {
-                  sound.playClick();
-                  setActiveStep(row.line);
-                }}
+        {/* Trace Table */}
+        {selected && (
+          <div className="pybe-card pybe-trace-card fade-in">
+            <h3 className="trace-heading">Step-by-step execution</h3>
+            <p className="trace-subtext">See why execution stopped and Line 3 was never reached:</p>
+
+            <div className="pybe-trace-list">
+              {chapter.codeProblem.exceptionTrace.map((row) => (
+                <div
+                  key={row.line}
+                  className={`pybe-trace-row status-${row.status} ${activeStep === row.line ? 'row-active' : ''}`}
+                  onClick={() => {
+                    sound.playClick();
+                    setActiveStep(row.line);
+                  }}
+                >
+                  <span className="trace-step-tag">Line {row.line}</span>
+                  <code className="trace-code-text">{row.code}</code>
+                  <span className={`trace-pill pill-${row.status}`}>
+                    {row.status === 'ok' && '✓ Normal'}
+                    {row.status === 'raises' && '💥 ValueError'}
+                    {row.status === 'skipped' && '⏭ Skipped'}
+                  </span>
+                  <span className="trace-note-text">{row.note}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="reveal-action-center" style={{ marginTop: '16px' }}>
+              <button
+                className="btn btn-primary btn-lg"
                 onClick={() => {
-                  sound.playClick();
-                  setActiveStep(row.line);
+                  sound.playSuccess();
+                  if (onContinue) onContinue();
                 }}
               >
-                <span className="trace-linenum">Line {row.line}</span>
-                <code className="trace-code">{row.code}</code>
-                <span className={`trace-badge badge-${row.status}`}>
-                  {row.status === 'ok' ? '✓ OK' : row.status === 'raises' ? '💥 Raises ValueError' : '⏭️ Skipped'}
-                </span>
-                <span className="trace-note">{row.note}</span>
-              </div>
-            ))}
+                See how to catch this error &rarr;
+              </button>
+            </div>
           </div>
-        </div>
-
-        {/* Concept Box: What is an Exception? */}
-        <div className="concept-callout">
-          <h4>💡 {chapter.conceptIntro.title}</h4>
-          {chapter.conceptIntro.body.split('\n\n').map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-        </div>
+        )}
       </div>
     </section>
   );

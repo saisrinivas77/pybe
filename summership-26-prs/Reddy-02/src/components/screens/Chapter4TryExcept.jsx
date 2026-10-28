@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { sound } from '../../services/soundEngine.js';
 
-export default function Chapter4TryExcept({ chapter }) {
+export default function Chapter4TryExcept({ chapter, onContinue }) {
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [focusedLine, setFocusedLine] = useState(null);
 
@@ -10,141 +10,126 @@ export default function Chapter4TryExcept({ chapter }) {
 
   return (
     <section className="screen screen-concept" aria-labelledby="chapter4-heading">
-      <div className="content-container">
-        <header className="screen-header">
-          <span className="screen-eyebrow">{chapter.eyebrow}</span>
-          <h2 id="chapter4-heading" className="screen-title">{chapter.title}</h2>
-          <p className="screen-lead">
-            Goddess Durga prepared weapons for every form of the challenge. In Python, you prepare for runtime exceptions using <code>try</code> and <code>except</code>.
+      <div className="pybe-single-column">
+        <header className="pybe-header-centered">
+          <h2 id="chapter4-heading" className="pybe-story-title">
+            What are try and except?
+          </h2>
+          <p className="pybe-lead">
+            Python combines the risky task and the safety shield into a <code>try / except</code> block.
           </p>
         </header>
 
-        {/* Interactive Code Stepper & Explanation */}
-        <div className="code-lab-stepper">
-          <div className="stepper-left">
-            <div className="code-viewer-header">
-              <span className="dot dot-red"></span>
-              <span className="dot dot-yellow"></span>
-              <span className="dot dot-green"></span>
-              <span className="code-filename">handled_countdown.py</span>
-            </div>
+        {/* Concept Explanation Card (PyBe style) */}
+        <div className="pybe-card pybe-explain-card">
+          <div className="explain-role-row">
+            <strong className="role-keyword">try:</strong>
+            <span className="role-desc">Attempt the task that might fail (e.g. converting user input).</span>
+          </div>
+          <div className="explain-role-row">
+            <strong className="role-keyword">except:</strong>
+            <span className="role-desc">If that specific error happens, jump here and handle it smoothly.</span>
+          </div>
+        </div>
 
-            <div className="code-lines-interactive" role="list" aria-label="Interactive code lines">
-              {chapter.codeLines.map((line) => {
-                const isHovered = focusedLine === line.lineNum;
-                // If variant is valid, line 3 runs and line 4-5 are skipped
-                let currentStatus = line.status;
-                if (!isInvalid) {
-                  if (line.lineNum === 2) currentStatus = 'normal';
-                  if (line.lineNum === 3) currentStatus = 'handled';
-                  if (line.lineNum === 4 || line.lineNum === 5) currentStatus = 'skipped';
-                }
-
-                return (
-                  <div
-                    key={line.lineNum}
-                    className={`code-line-item line-status-${currentStatus} ${isHovered ? 'line-focused' : ''}`}
-                    onClick={() => {
-                      sound.playClick();
-                      setFocusedLine(line.lineNum);
-                    }}
-                    onMouseEnter={() => setFocusedLine(line.lineNum)}
-                    role="listitem"
-                    tabIndex={0}
-                  >
-                    <span className="line-no">{line.lineNum}</span>
-                    <pre className="line-code">
-                      {line.lineNum === 2
-                        ? `    days = int(${variant.input})`
-                        : line.code}
-                    </pre>
-                    <span className={`status-pill pill-${currentStatus}`}>
-                      {currentStatus === 'raises' && '💥 Raises'}
-                      {currentStatus === 'handled' && '▶ Runs'}
-                      {currentStatus === 'skipped' && '⏭ Skipped'}
-                      {currentStatus === 'normal' && 'Attempt'}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Line Explanation Drawer */}
-            <div className="line-explainer-card">
-              <span className="explainer-icon">🔍</span>
-              <div className="explainer-content">
-                <strong>
-                  {focusedLine
-                    ? `Line ${focusedLine} Breakdown:`
-                    : 'Click or hover any line above to inspect how Python evaluates it.'}
-                </strong>
-                <p>
-                  {focusedLine
-                    ? chapter.codeLines.find((l) => l.lineNum === focusedLine)?.explain
-                    : 'A try block tells Python: "Attempt this, but catch any error in except."'}
-                </p>
-              </div>
-            </div>
+        {/* Interactive Code Stepper */}
+        <div className="pybe-card pybe-stepper-card">
+          <div className="code-header-bar">
+            <span className="code-filename">handled_countdown.py</span>
+            <span className="code-badge">Click lines to inspect</span>
           </div>
 
-          {/* Interactive Variant Tester */}
-          <div className="stepper-right">
-            <div className="input-experimenter-card">
-              <h3>🧪 Interactive Input Tester</h3>
-              <p className="experimenter-lead">{chapter.editableExample.prompt}</p>
+          <div className="pybe-code-lines" role="list">
+            {chapter.codeLines.map((line) => {
+              const isHovered = focusedLine === line.lineNum;
+              let currentStatus = line.status;
+              if (!isInvalid) {
+                if (line.lineNum === 2) currentStatus = 'normal';
+                if (line.lineNum === 3) currentStatus = 'handled';
+                if (line.lineNum === 4 || line.lineNum === 5) currentStatus = 'skipped';
+              }
 
-              <div className="variant-buttons" role="radiogroup" aria-label="Input options">
-                {chapter.editableExample.variants.map((v, idx) => (
-                  <button
-                    key={idx}
-                    role="radio"
-                    aria-checked={selectedVariant === idx}
-                    className={`variant-btn ${selectedVariant === idx ? 'variant-active' : ''}`}
-                    onClick={() => {
-                      sound.playClick();
-                      setSelectedVariant(idx);
-                    }}
-                  >
-                    <span className="variant-label">input = {v.input}</span>
-                    <span className="variant-tag">{v.input === '"9"' || v.input === '"0"' ? 'Valid Integer' : 'Raises ValueError'}</span>
-                  </button>
-                ))}
-              </div>
+              return (
+                <div
+                  key={line.lineNum}
+                  className={`pybe-line-row line-status-${currentStatus} ${isHovered ? 'line-active' : ''}`}
+                  onClick={() => {
+                    sound.playClick();
+                    setFocusedLine(line.lineNum);
+                  }}
+                  role="listitem"
+                >
+                  <span className="line-num">{line.lineNum}</span>
+                  <pre className="line-code">
+                    {line.lineNum === 2
+                      ? `    days = int(${variant.input})`
+                      : line.code}
+                  </pre>
+                  <span className={`line-status-tag tag-${currentStatus}`}>
+                    {currentStatus === 'raises' && '💥 Raises'}
+                    {currentStatus === 'handled' && '▶ Runs'}
+                    {currentStatus === 'skipped' && '⏭ Skipped'}
+                    {currentStatus === 'normal' && '✓ Normal'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
 
-              {/* Console Output Simulation */}
-              <div className="terminal-card">
-                <div className="terminal-header">
-                  <span className="terminal-title">Terminal Console Output</span>
-                  <span className="terminal-badge">{isInvalid ? 'Caught by except' : 'Successful try execution'}</span>
-                </div>
-                <div className="terminal-body">
-                  <span className="terminal-prompt">&gt;&gt;&gt; python handled_countdown.py</span>
-                  <pre className="terminal-output">{variant.expectedOutput}</pre>
-                </div>
-              </div>
+          {/* Line Explainer Box */}
+          <div className="pybe-line-detail">
+            <strong>
+              {focusedLine
+                ? `Line ${focusedLine} Breakdown:`
+                : 'Click any line above to inspect Python\'s execution step:'}
+            </strong>
+            <p>
+              {focusedLine
+                ? chapter.codeLines.find((l) => l.lineNum === focusedLine)?.explain
+                : 'When Line 2 raises a ValueError, Python immediately skips Line 3 and runs the except block.'}
+            </p>
+          </div>
+        </div>
 
-              {/* Execution Path Diagram */}
-              <div className="path-diagram">
-                <strong>Execution Order:</strong>
-                <div className="path-badges">
-                  {isInvalid ? (
-                    <>
-                      <span className="badge-step">Line 1 (try)</span> &rarr;
-                      <span className="badge-step badge-err">Line 2 (int({variant.input}))</span> &rarr;
-                      <span className="badge-step badge-handled">Line 4 (except ValueError)</span> &rarr;
-                      <span className="badge-step badge-handled">Line 5 (print message)</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="badge-step">Line 1 (try)</span> &rarr;
-                      <span className="badge-step badge-handled">Line 2 (int({variant.input}))</span> &rarr;
-                      <span className="badge-step badge-handled">Line 3 (print({variant.expectedOutput}))</span> &rarr;
-                      <span className="badge-step badge-skip">Lines 4-5 (Skipped)</span>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
+        {/* Input Tester Chips */}
+        <div className="pybe-card pybe-tester-card">
+          <h3 className="tester-heading">Try different inputs:</h3>
+          <div className="chips-row" role="radiogroup">
+            {chapter.editableExample.variants.map((v, idx) => (
+              <button
+                key={idx}
+                role="radio"
+                aria-checked={selectedVariant === idx}
+                className={`pybe-chip-btn ${selectedVariant === idx ? 'chip-active' : ''}`}
+                onClick={() => {
+                  sound.playClick();
+                  setSelectedVariant(idx);
+                  setFocusedLine(null);
+                }}
+              >
+                <code>{v.input}</code>
+                <span className="chip-label">
+                  {v.input === '"9"' || v.input === '"0"' ? 'Valid' : 'Invalid'}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div className="pybe-terminal-box">
+            <span className="terminal-label">Terminal Output:</span>
+            <pre className="terminal-text">{variant.expectedOutput}</pre>
+          </div>
+
+          <div className="reveal-action-center" style={{ marginTop: '14px' }}>
+            <button
+              className="btn btn-primary btn-lg"
+              onClick={() => {
+                sound.playSuccess();
+                if (onContinue) onContinue();
+              }}
+            >
+              Next: What about missing data? &rarr;
+            </button>
           </div>
         </div>
       </div>

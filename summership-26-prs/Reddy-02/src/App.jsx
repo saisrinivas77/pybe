@@ -21,7 +21,7 @@ export default function App() {
   const [completedIndices, setCompletedIndices] = useState(new Set([0]));
   const [sfxEnabled, setSfxEnabled] = useState(true);
   const [narrationEnabled, setNarrationEnabled] = useState(false);
-  const [captionsVisible, setCaptionsVisible] = useState(true);
+  const [captionsVisible, setCaptionsVisible] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   // User input states
@@ -172,6 +172,7 @@ export default function App() {
             chapter={currentChapter}
             selectedAnswer={ch2Answer}
             onAnswerSelected={(ans) => setCh2Answer(ans)}
+            onContinue={handleNext}
           />
         )}
 
@@ -180,12 +181,14 @@ export default function App() {
             chapter={currentChapter}
             selectedAnswer={ch3Answer}
             onAnswerSelected={(ans) => setCh3Answer(ans)}
+            onContinue={handleNext}
           />
         )}
 
         {currentIndex === 4 && (
           <Chapter4TryExcept
             chapter={currentChapter}
+            onContinue={handleNext}
           />
         )}
 
@@ -194,6 +197,7 @@ export default function App() {
             chapter={currentChapter}
             selectedAnswer={ch5Answer}
             onAnswerSelected={(ans) => setCh5Answer(ans)}
+            onContinue={handleNext}
           />
         )}
 
@@ -201,12 +205,14 @@ export default function App() {
           <Chapter6Vijayadashami
             chapter={currentChapter}
             onChallengeSolved={() => setCh6Solved(true)}
+            onContinue={handleNext}
           />
         )}
 
         {currentIndex === 7 && (
           <Chapter7CodeLab
             chapter={currentChapter}
+            onContinue={handleNext}
           />
         )}
 

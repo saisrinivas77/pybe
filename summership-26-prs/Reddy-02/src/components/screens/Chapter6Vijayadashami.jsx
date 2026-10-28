@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { sound } from '../../services/soundEngine.js';
 
-export default function Chapter6Vijayadashami({ chapter, onChallengeSolved }) {
+export default function Chapter6Vijayadashami({ chapter, onChallengeSolved, onContinue }) {
   const [answers, setAnswers] = useState({
     b1: '',
     b2: '',
@@ -9,7 +9,6 @@ export default function Chapter6Vijayadashami({ chapter, onChallengeSolved }) {
     b4: '',
   });
   const [checked, setChecked] = useState(false);
-  const [activeTab, setActiveTab] = useState('validKey');
 
   const blanks = chapter.finalCodeChallenge.blanks;
 
@@ -43,175 +42,146 @@ export default function Chapter6Vijayadashami({ chapter, onChallengeSolved }) {
 
   return (
     <section className="screen screen-concept" aria-labelledby="chapter6-heading">
-      <div className="content-container">
-        <header className="screen-header">
-          <span className="screen-eyebrow">{chapter.eyebrow}</span>
-          <h2 id="chapter6-heading" className="screen-title">{chapter.title}</h2>
-          <p className="screen-lead">
-            Vijayadashami brings together all the threads of preparation and vigilance. In Python, the four-part exception structure provides complete control over every runtime outcome.
+      <div className="pybe-single-column">
+        <header className="pybe-header-centered">
+          <h2 id="chapter6-heading" className="pybe-story-title">
+            The Complete 4-Part Structure
+          </h2>
+          <p className="pybe-lead">
+            Python gives you complete control over every possible outcome: success, failure, and cleanup.
           </p>
         </header>
 
-        {/* Story & Regional Note */}
-        <div className="story-snippet-card">
-          <p>{chapter.story}</p>
-          <div className="regional-tag">
-            <span>🌍 {chapter.regionalNote}</span>
+        {/* 4 Cards Overview (PyBe style) */}
+        <div className="pybe-roles-grid">
+          <div className="role-mini-card">
+            <span className="mini-keyword">try</span>
+            <span className="mini-role">Attempt risky code</span>
+          </div>
+          <div className="role-mini-card">
+            <span className="mini-keyword">except</span>
+            <span className="mini-role">Run on failure</span>
+          </div>
+          <div className="role-mini-card">
+            <span className="mini-keyword">else</span>
+            <span className="mini-role">Run on success</span>
+          </div>
+          <div className="role-mini-card">
+            <span className="mini-keyword">finally</span>
+            <span className="mini-role">Always run (cleanup)</span>
           </div>
         </div>
 
-        {/* Fill in the Blanks Code Challenge */}
-        <div className="fill-blanks-container">
-          <div className="challenge-banner">
-            <h3>{chapter.finalCodeChallenge.title}</h3>
-            <p>{chapter.finalCodeChallenge.description}</p>
+        {/* Fill in the Blanks Editor */}
+        <div className="pybe-card pybe-blanks-card">
+          <h3 className="blanks-title">Write the code: Complete the registration desk</h3>
+          <p className="blanks-lead">Fill in the 4 blanks to assemble the pipeline:</p>
+
+          <div className="pybe-editor-box">
+            <pre className="blank-code-line">festival_days = &#123; &quot;vijayadashami&quot;: 10, &quot;navami&quot;: 9 &#125;</pre>
+            <pre className="blank-code-line">day_input = &quot;vijayadashami&quot;</pre>
+            <pre className="blank-code-line"></pre>
+
+            {/* Blank 1: try */}
+            <div className="editor-input-row">
+              <input
+                type="text"
+                className={`pybe-blank-field ${checked ? (isB1Correct ? 'field-ok' : 'field-fail') : ''}`}
+                value={answers.b1}
+                onChange={(e) => handleChange('b1', e.target.value)}
+                placeholder="blank 1"
+                aria-label="Blank 1: Keyword that begins the block"
+              />
+              <span className="field-colon">:</span>
+              <span className="field-hint">Hint: {blanks[0].hint}</span>
+            </div>
+
+            <pre className="blank-code-line">    day_num = festival_days[day_input]</pre>
+
+            {/* Blank 2: else */}
+            <div className="editor-input-row">
+              <input
+                type="text"
+                className={`pybe-blank-field ${checked ? (isB2Correct ? 'field-ok' : 'field-fail') : ''}`}
+                value={answers.b2}
+                onChange={(e) => handleChange('b2', e.target.value)}
+                placeholder="blank 2"
+                aria-label="Blank 2: Runs when try succeeds"
+              />
+              <span className="field-colon">:</span>
+              <span className="field-hint">Hint: {blanks[1].hint}</span>
+            </div>
+
+            <pre className="blank-code-line">        print(f"Registered for day &#123;day_num&#125;.")</pre>
+
+            {/* Blank 3: except */}
+            <div className="editor-input-row">
+              <input
+                type="text"
+                className={`pybe-blank-field ${checked ? (isB3Correct ? 'field-ok' : 'field-fail') : ''}`}
+                value={answers.b3}
+                onChange={(e) => handleChange('b3', e.target.value)}
+                placeholder="blank 3"
+                aria-label="Blank 3: Catches KeyError"
+              />
+              <span className="field-colon"> KeyError:</span>
+              <span className="field-hint">Hint: {blanks[2].hint}</span>
+            </div>
+
+            <pre className="blank-code-line">    print(f"Unknown day: &#123;day_input&#125;")</pre>
+
+            {/* Blank 4: finally */}
+            <div className="editor-input-row">
+              <input
+                type="text"
+                className={`pybe-blank-field ${checked ? (isB4Correct ? 'field-ok' : 'field-fail') : ''}`}
+                value={answers.b4}
+                onChange={(e) => handleChange('b4', e.target.value)}
+                placeholder="blank 4"
+                aria-label="Blank 4: Always runs"
+              />
+              <span className="field-colon">:</span>
+              <span className="field-hint">Hint: {blanks[3].hint}</span>
+            </div>
+
+            <pre className="blank-code-line">    print("Registration desk closed.")</pre>
           </div>
 
-          <div className="code-editor-simulation">
-            <div className="code-viewer-header">
-              <span className="dot dot-red"></span>
-              <span className="dot dot-yellow"></span>
-              <span className="dot dot-green"></span>
-              <span className="code-filename">festival_registration.py</span>
-            </div>
-
-            <div className="code-body-blanks">
-              <pre className="pre-code-line">festival_days = &#123;</pre>
-              <pre className="pre-code-line">    &quot;vijayadashami&quot;: 10,</pre>
-              <pre className="pre-code-line">    &quot;navami&quot;: 9,</pre>
-              <pre className="pre-code-line">    &quot;ashtami&quot;: 8</pre>
-              <pre className="pre-code-line">&#125;</pre>
-              <pre className="pre-code-line">day_input = &quot;vijayadashami&quot;</pre>
-              <pre className="pre-code-line"></pre>
-
-              {/* Blank 1: try */}
-              <div className="blank-line">
-                <input
-                  type="text"
-                  className={`blank-input ${checked ? (isB1Correct ? 'blank-ok' : 'blank-fail') : ''}`}
-                  value={answers.b1}
-                  onChange={(e) => handleChange('b1', e.target.value)}
-                  placeholder="[blank 1]"
-                  aria-label="Blank 1: Keyword that begins the block"
-                />
-                <span className="blank-code">:</span>
-                <span className="blank-hint">Hint: {blanks[0].hint}</span>
-              </div>
-
-              <pre className="pre-code-line">    day_num = festival_days[day_input]</pre>
-
-              {/* Blank 2: else */}
-              <div className="blank-line indent-1">
-                <input
-                  type="text"
-                  className={`blank-input ${checked ? (isB2Correct ? 'blank-ok' : 'blank-fail') : ''}`}
-                  value={answers.b2}
-                  onChange={(e) => handleChange('b2', e.target.value)}
-                  placeholder="[blank 2]"
-                  aria-label="Blank 2: Keyword that runs when try succeeds"
-                />
-                <span className="blank-code">:</span>
-                <span className="blank-hint">Hint: {blanks[1].hint}</span>
-              </div>
-
-              <pre className="pre-code-line indent-2">    print(f&quot;Registered for day &#123;day_num&#125;.&quot;)</pre>
-
-              {/* Blank 3: except */}
-              <div className="blank-line">
-                <input
-                  type="text"
-                  className={`blank-input ${checked ? (isB3Correct ? 'blank-ok' : 'blank-fail') : ''}`}
-                  value={answers.b3}
-                  onChange={(e) => handleChange('b3', e.target.value)}
-                  placeholder="[blank 3]"
-                  aria-label="Blank 3: Keyword that catches exception"
-                />
-                <span className="blank-code"> KeyError:</span>
-                <span className="blank-hint">Hint: {blanks[2].hint}</span>
-              </div>
-
-              <pre className="pre-code-line indent-1">    print(f&quot;Unknown festival day: &#123;day_input&#125;&quot;)</pre>
-
-              {/* Blank 4: finally */}
-              <div className="blank-line">
-                <input
-                  type="text"
-                  className={`blank-input ${checked ? (isB4Correct ? 'blank-ok' : 'blank-fail') : ''}`}
-                  value={answers.b4}
-                  onChange={(e) => handleChange('b4', e.target.value)}
-                  placeholder="[blank 4]"
-                  aria-label="Blank 4: Keyword that always runs"
-                />
-                <span className="blank-code">:</span>
-                <span className="blank-hint">Hint: {blanks[3].hint}</span>
-              </div>
-
-              <pre className="pre-code-line indent-1">    print(&quot;Registration desk closed for this request.&quot;)</pre>
-            </div>
-
-            <div className="blanks-actions">
-              <button className="btn btn-primary" onClick={handleCheck}>
-                Verify Structure
-              </button>
-              <button className="btn btn-secondary" onClick={handleFillAll}>
-                Reveal Complete Pattern
-              </button>
-              {checked && allCorrect && (
-                <span className="success-badge">✨ All 4 keywords correctly placed!</span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Dual Path Visualizer */}
-        <div className="dual-path-card">
-          <h4>Execution Outcomes Comparison</h4>
-          <div className="path-toggle-row">
-            <button
-              className={`tab-btn ${activeTab === 'validKey' ? 'active' : ''}`}
-              onClick={() => {
-                sound.playClick();
-                setActiveTab('validKey');
-              }}
-            >
-              When day_input exists (&quot;vijayadashami&quot;)
+          <div className="blanks-actions">
+            <button className="btn btn-primary" onClick={handleCheck}>
+              Check Code
             </button>
-            <button
-              className={`tab-btn ${activeTab === 'invalidKey' ? 'active' : ''}`}
-              onClick={() => {
-                sound.playClick();
-                setActiveTab('invalidKey');
-              }}
-            >
-              When day_input is missing (&quot;diwali&quot;)
+            <button className="btn btn-secondary" onClick={handleFillAll}>
+              Fill Answers
             </button>
           </div>
 
-          <div className="path-detail-content">
-            <div className="path-sequence">
-              <strong>Order of execution:</strong>
-              {chapter.finalCodeChallenge.executionPaths[activeTab].path.map((step, idx) => (
-                <span key={idx} className="badge-step badge-handled">
-                  {step} {idx < chapter.finalCodeChallenge.executionPaths[activeTab].path.length - 1 ? '→' : ''}
-                </span>
-              ))}
+          {checked && (
+            <div className={`pybe-feedback-box ${allCorrect ? 'feedback-correct' : 'feedback-hint'}`}>
+              <span className="feedback-status-title">
+                {allCorrect ? '✓ Excellent work!' : '💡 Check the blanks:'}
+              </span>
+              <p>
+                {allCorrect
+                  ? 'All 4 keywords placed correctly. Notice how else only runs on success, while finally always runs.'
+                  : 'Make sure you type: try, else, except, and finally.'}
+              </p>
             </div>
-            <div className="terminal-card small">
-              <pre className="terminal-output">
-                {chapter.finalCodeChallenge.executionPaths[activeTab].output}
-              </pre>
-            </div>
-          </div>
-        </div>
+          )}
 
-        {/* 4 Keywords Reference Grid */}
-        <div className="keywords-grid">
-          {chapter.conceptSummary.items.map((it) => (
-            <div key={it.keyword} className="keyword-item">
-              <code className="keyword-name">{it.keyword}</code>
-              <p className="keyword-role">{it.role}</p>
+          {checked && allCorrect && (
+            <div className="reveal-action-center" style={{ marginTop: '16px' }}>
+              <button
+                className="btn btn-primary btn-lg"
+                onClick={() => {
+                  sound.playSuccess();
+                  if (onContinue) onContinue();
+                }}
+              >
+                Try it in the interactive lab &rarr;
+              </button>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </section>

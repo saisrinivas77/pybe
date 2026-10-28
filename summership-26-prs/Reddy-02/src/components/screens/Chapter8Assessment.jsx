@@ -51,48 +51,52 @@ export default function Chapter8Assessment({ chapter, onAssessmentComplete, save
 
   return (
     <section className="screen screen-concept" aria-labelledby="chapter8-heading">
-      <div className="content-container">
-        <header className="screen-header">
-          <span className="screen-eyebrow">{chapter.eyebrow}</span>
-          <h2 id="chapter8-heading" className="screen-title">{chapter.title}</h2>
-          <p className="screen-lead">
-            Demonstrate your mastery of Python exception handling. Answer all 5 questions below ({passMark}/5 required to pass).
-          </p>
+      <div className="pybe-single-column">
+        <header className="pybe-header-centered">
+          <h2 id="chapter8-heading" className="pybe-story-title">
+            Test your understanding
+          </h2>
+          <span className="pybe-progress-label">
+            {totalAnswered} OF {questions.length} ANSWERED ({passMark}/5 REQUIRED TO PASS)
+          </span>
         </header>
 
-        {/* Assessment Questions List */}
-        <div className="quiz-questions-list">
+        {/* Questions List */}
+        <div className="pybe-quiz-stack">
           {questions.map((q, qIndex) => {
             const selectedOptId = userAnswers[q.id];
             const isCorrect = selectedOptId === q.correctId;
 
             return (
-              <div key={q.id} className="quiz-question-card">
-                <div className="question-header-row">
-                  <span className="question-num-tag">Question {qIndex + 1} of {questions.length}</span>
-                  <span className="question-concept-tag">{q.concept}</span>
+              <div key={q.id} className="pybe-card pybe-question-card">
+                <div className="question-title-row">
+                  <span className="question-num-circle">{qIndex + 1}</span>
+                  <div className="question-header-details">
+                    <span className="concept-pill">{q.concept}</span>
+                    <div className="question-prompt-text">
+                      {q.text.split('\n\n').map((part, pIdx) => {
+                        if (part.includes('try:') || part.includes('event[')) {
+                          return (
+                            <pre key={pIdx} className="pybe-pre-inline">
+                              <code>{part}</code>
+                            </pre>
+                          );
+                        }
+                        return <p key={pIdx}>{part}</p>;
+                      })}
+                    </div>
+                  </div>
                 </div>
 
-                <div className="question-prompt-text">
-                  {q.text.split('\n\n').map((part, pIdx) => {
-                    if (part.includes('try:') || part.includes('event[')) {
-                      return (
-                        <pre key={pIdx} className="quiz-code-block">
-                          <code>{part}</code>
-                        </pre>
-                      );
-                    }
-                    return <p key={pIdx}>{part}</p>;
-                  })}
-                </div>
-
-                <div className="quiz-options-group" role="radiogroup">
+                <div className="pybe-options-list" role="radiogroup">
                   {q.options.map((opt) => {
                     const isSelected = selectedOptId === opt.id;
                     let optClass = '';
                     if (submitted) {
-                      if (opt.id === q.correctId) optClass = 'opt-status-correct';
-                      else if (isSelected && !isCorrect) optClass = 'opt-status-wrong';
+                      if (opt.id === q.correctId) optClass = 'pybe-opt-correct';
+                      else if (isSelected && !isCorrect) optClass = 'pybe-opt-wrong';
+                    } else if (isSelected) {
+                      optClass = 'pybe-opt-selected';
                     }
 
                     return (
@@ -101,19 +105,21 @@ export default function Chapter8Assessment({ chapter, onAssessmentComplete, save
                         role="radio"
                         aria-checked={isSelected}
                         disabled={submitted}
-                        className={`quiz-option-btn ${isSelected ? 'opt-selected' : ''}`}
+                        className={`pybe-option-row ${optClass}`}
                         onClick={() => handleSelectOption(q.id, opt.id)}
                       >
-                        <span className="opt-letter">{opt.id.toUpperCase()}</span>
-                        <span className="opt-label">{opt.text}</span>
+                        <span className="option-label-text">{opt.text}</span>
+                        {submitted && opt.id === q.correctId && <span className="check-icon">✓</span>}
                       </button>
                     );
                   })}
                 </div>
 
                 {submitted && (
-                  <div className={`quiz-feedback-box ${isCorrect ? 'fb-correct' : 'fb-wrong'}`}>
-                    <strong>{isCorrect ? '✅ Correct' : '❌ Incorrect'}</strong>
+                  <div className={`pybe-feedback-box ${isCorrect ? 'feedback-correct' : 'feedback-hint'}`}>
+                    <span className="feedback-status-title">
+                      {isCorrect ? '✓ Correct' : '❌ Incorrect'}
+                    </span>
                     <p>{q.explanation}</p>
                   </div>
                 )}
@@ -122,62 +128,58 @@ export default function Chapter8Assessment({ chapter, onAssessmentComplete, save
           })}
         </div>
 
-        {/* Score & Actions Panel */}
-        <div className="quiz-submission-card">
+        {/* Submit & Score Card */}
+        <div className="pybe-card pybe-submit-card">
           {!submitted ? (
-            <div className="submit-prompt-row">
-              <span className="answered-status">
-                {totalAnswered} of {questions.length} questions answered
+            <div className="submit-action-row">
+              <span className="submit-status-text">
+                {allAnswered ? 'All questions answered!' : 'Answer all 5 questions to submit'}
               </span>
               <button
                 className="btn btn-primary btn-lg"
                 disabled={!allAnswered}
                 onClick={handleSubmit}
               >
-                Submit Assessment &rarr;
+                Submit Answers &rarr;
               </button>
             </div>
           ) : (
-            <div className={`results-banner ${passed ? 'banner-pass' : 'banner-retry'}`}>
-              <div className="results-content">
-                <span className="results-emoji">{passed ? '🏆' : '📚'}</span>
-                <div>
-                  <h3 className="results-title">
-                    {passed
-                      ? `Congratulations! You scored ${score} / ${questions.length} (Pass)`
-                      : `You scored ${score} / ${questions.length} (Requires ${passMark}/${questions.length} to pass)`}
-                  </h3>
-                  <p className="results-desc">
-                    {passed
-                      ? 'You have successfully completed the Dasara Festival Discovery Lab! Review the key concepts reference below.'
-                      : 'Review the explanations above and retry the questions you missed.'}
-                  </p>
-                </div>
-              </div>
-              <div className="results-actions">
-                <button className="btn btn-secondary" onClick={handleRetry}>
-                  🔄 Retry Assessment
-                </button>
-                {passed && onRestart && (
-                  <button className="btn btn-primary" onClick={onRestart}>
-                    🔄 Replay Lab
+            <div className={`pybe-result-banner ${passed ? 'banner-pass' : 'banner-retry'}`}>
+              <span className="result-big-icon">{passed ? '🏆' : '📚'}</span>
+              <div className="result-info">
+                <h3 className="result-headline">
+                  {passed
+                    ? `Congratulations! You passed with ${score} / ${questions.length}`
+                    : `You scored ${score} / ${questions.length} (Requires ${passMark}/${questions.length} to pass)`}
+                </h3>
+                <p className="result-subtext">
+                  {passed
+                    ? 'You have mastered the core concepts of Python exception handling.'
+                    : 'Review the explanations above and retry the questions you missed.'}
+                </p>
+                <div className="result-buttons">
+                  <button className="btn btn-secondary" onClick={handleRetry}>
+                    Retry Quiz
                   </button>
-                )}
+                  {passed && onRestart && (
+                    <button className="btn btn-primary" onClick={onRestart}>
+                      Restart Lab
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           )}
         </div>
 
-        {/* Concept Reference Cheat Sheet */}
-        <div className="cheat-sheet-card">
-          <h3 className="cheat-sheet-title">📜 Exception Handling Reference Cheat Sheet</h3>
-          <div className="cheat-grid">
+        {/* Exception Cheat Sheet */}
+        <div className="pybe-card pybe-cheat-sheet">
+          <h3 className="cheat-sheet-title">Exception Reference Summary</h3>
+          <div className="cheat-summary-grid">
             {CONCEPTS_SUMMARY.map((item, idx) => (
-              <div key={idx} className="cheat-item">
-                <div className="cheat-header">
-                  <code className="cheat-keyword">{item.keyword}</code>
-                </div>
-                <p className="cheat-def">{item.definition}</p>
+              <div key={idx} className="cheat-card">
+                <code className="cheat-keyword">{item.keyword}</code>
+                <p className="cheat-desc">{item.definition}</p>
               </div>
             ))}
           </div>

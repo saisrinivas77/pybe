@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { sound } from '../../services/soundEngine.js';
 
-export default function Chapter5RamaJourney({ chapter, onAnswerSelected, selectedAnswer }) {
+export default function Chapter5RamaJourney({ chapter, onAnswerSelected, selectedAnswer, onContinue }) {
   const [selected, setSelected] = useState(selectedAnswer || null);
   const [activeStrategy, setActiveStrategy] = useState(0);
 
@@ -15,109 +15,115 @@ export default function Chapter5RamaJourney({ chapter, onAnswerSelected, selecte
     if (onAnswerSelected) onAnswerSelected(id);
   };
 
+  const isCorrect = selected === chapter.codeProblem.correctId;
+  const strategy = chapter.recoveryChallenge.options[activeStrategy];
+
   return (
     <section className="screen screen-concept" aria-labelledby="chapter5-heading">
-      <div className="content-container">
-        <header className="screen-header">
-          <span className="screen-eyebrow">{chapter.eyebrow}</span>
-          <h2 id="chapter5-heading" className="screen-title">{chapter.title}</h2>
-          <p className="screen-lead">
-            In the Ramayana tradition, the journey to Lanka required dependable coordination. When asking a dictionary for a key that has not been recorded, Python raises a <code>KeyError</code>.
+      <div className="pybe-single-column">
+        <header className="pybe-header-centered">
+          <h2 id="chapter5-heading" className="pybe-story-title">
+            What is a KeyError?
+          </h2>
+          <p className="pybe-lead">
+            What happens when a program searches a dictionary for a key that was never stored?
           </p>
         </header>
 
-        {/* Narrative Box */}
-        <div className="story-snippet-card">
-          <p>{chapter.story}</p>
+        {/* Code Card */}
+        <div className="pybe-card pybe-code-card">
+          <div className="code-header-bar">
+            <span className="code-filename">mission_data.py</span>
+          </div>
+          <pre className="pybe-pre">
+            <code>{chapter.codeProblem.code}</code>
+          </pre>
         </div>
 
-        {/* Code Challenge Grid */}
-        <div className="code-challenge-layout">
-          <div className="code-viewer-panel">
-            <div className="code-viewer-header">
-              <span className="dot dot-red"></span>
-              <span className="dot dot-yellow"></span>
-              <span className="dot dot-green"></span>
-              <span className="code-filename">mission_data.py</span>
-            </div>
-            <pre className="code-pre">
-              <code>{chapter.codeProblem.code}</code>
-            </pre>
+        {/* Question Card */}
+        <div className="pybe-card pybe-question-card">
+          <div className="question-title-row">
+            <span className="question-num-circle">?</span>
+            <h3 className="question-text">{chapter.codeProblem.question}</h3>
           </div>
 
-          <div className="quiz-column">
-            <h3 className="challenge-prompt">{chapter.codeProblem.question}</h3>
-            <div className="options-list">
-              {chapter.codeProblem.options.map((opt) => {
-                const isChosen = selected === opt.id;
-                const isCorrect = opt.id === chapter.codeProblem.correctId;
-                let statusClass = '';
-                if (selected) {
-                  if (isChosen && isCorrect) statusClass = 'option-correct';
-                  else if (isChosen && !isCorrect) statusClass = 'option-wrong';
-                  else if (isCorrect) statusClass = 'option-revealed-best';
-                }
+          <div className="pybe-options-list" role="radiogroup">
+            {chapter.codeProblem.options.map((opt) => {
+              const isChosen = selected === opt.id;
+              const isOptionCorrect = opt.id === chapter.codeProblem.correctId;
+              let statusClass = '';
+              if (selected) {
+                if (isChosen && isOptionCorrect) statusClass = 'pybe-opt-correct';
+                else if (isChosen && !isOptionCorrect) statusClass = 'pybe-opt-wrong';
+                else if (isOptionCorrect) statusClass = 'pybe-opt-reveal';
+              }
 
-                return (
-                  <button
-                    key={opt.id}
-                    className={`option-btn ${statusClass} ${isChosen ? 'selected' : ''}`}
-                    onClick={() => handleSelect(opt.id)}
-                  >
-                    <span className="option-letter">{opt.id.toUpperCase()}</span>
-                    <span className="option-text">{opt.text}</span>
-                  </button>
-                );
-              })}
+              return (
+                <button
+                  key={opt.id}
+                  role="radio"
+                  aria-checked={isChosen}
+                  className={`pybe-option-row ${statusClass}`}
+                  onClick={() => handleSelect(opt.id)}
+                >
+                  <span className="option-label-text">{opt.text}</span>
+                  {selected && isChosen && isOptionCorrect && <span className="check-icon">✓</span>}
+                </button>
+              );
+            })}
+          </div>
+
+          {selected && (
+            <div className={`pybe-feedback-box ${isCorrect ? 'feedback-correct' : 'feedback-hint'}`}>
+              <span className="feedback-status-title">
+                {isCorrect ? '✓ Correct' : '💡 Explanation:'}
+              </span>
+              <p>{chapter.codeProblem.explanations[selected]}</p>
+            </div>
+          )}
+        </div>
+
+        {/* 3 Recovery Patterns (PyBe clean tabs) */}
+        {selected && (
+          <div className="pybe-card pybe-recovery-card fade-in">
+            <h3 className="recovery-heading">3 Ways to Safely Handle Missing Keys</h3>
+            <p className="recovery-lead">Click a tab to compare safe access patterns:</p>
+
+            <div className="pybe-pill-tabs">
+              {chapter.recoveryChallenge.options.map((strat, idx) => (
+                <button
+                  key={strat.id}
+                  className={`pybe-pill-tab ${activeStrategy === idx ? 'tab-active' : ''}`}
+                  onClick={() => {
+                    sound.playClick();
+                    setActiveStrategy(idx);
+                  }}
+                >
+                  {strat.label}
+                </button>
+              ))}
             </div>
 
-            {selected && (
-              <div className={`feedback-card ${selected === chapter.codeProblem.correctId ? 'feedback-positive' : 'feedback-caution'}`}>
-                <strong>{selected === chapter.codeProblem.correctId ? '✅ Spot on!' : '💡 Notice the bracket notation:'}</strong>
-                <p>{chapter.codeProblem.explanations[selected]}</p>
+            {strategy && (
+              <div className="strategy-detail-box">
+                <pre className="strategy-code">{strategy.code}</pre>
+                <p className="strategy-explanation">{strategy.explain}</p>
               </div>
             )}
-          </div>
-        </div>
 
-        {/* 3 Recovery Strategies Comparison Card */}
-        <div className="recovery-strategies-card">
-          <div className="card-header-row">
-            <span className="icon-star">🛡️</span>
-            <div>
-              <h3>How to Recover Gracefully from Missing Keys</h3>
-              <p>Explore the 3 idiomatic Python patterns for handling potentially missing keys:</p>
-            </div>
-          </div>
-
-          <div className="strategy-tabs">
-            {chapter.recoveryChallenge.options.map((strat, idx) => (
+            <div className="reveal-action-center" style={{ marginTop: '16px' }}>
               <button
-                key={strat.id}
-                className={`strategy-tab-btn ${activeStrategy === idx ? 'active' : ''}`}
+                className="btn btn-primary btn-lg"
                 onClick={() => {
-                  sound.playClick();
-                  setActiveStrategy(idx);
+                  sound.playSuccess();
+                  if (onContinue) onContinue();
                 }}
               >
-                <span>{strat.label}</span>
-                {strat.correct ? <span className="valid-pill">Recommended</span> : <span className="invalid-pill">Anti-pattern</span>}
+                Next: The Complete 4-Part Structure &rarr;
               </button>
-            ))}
-          </div>
-
-          <div className="strategy-detail-box">
-            <div className="strategy-code-container">
-              <pre className="code-pre">
-                <code>{chapter.recoveryChallenge.options[activeStrategy].code}</code>
-              </pre>
-            </div>
-            <div className="strategy-explanation">
-              <strong>Why this works:</strong>
-              <p>{chapter.recoveryChallenge.options[activeStrategy].explain}</p>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

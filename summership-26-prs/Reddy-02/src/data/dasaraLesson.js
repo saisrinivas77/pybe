@@ -96,19 +96,19 @@ export const CHAPTERS = [
     type: 'story-challenge',
     chapterNum: 2,
     eyebrow: 'The Story · Chapter I',
-    title: 'The Arrogance of Certainty',
+    title: 'The Visitor at the Registration Desk',
     narration:
-      'In the traditional account, Mahishasura obtained a boon that made him believe he could not be defeated by any man or god. This certainty without regard for the unexpected left him unprepared. When the unexpected finally arrived — in the form of Goddess Durga, the united energy of all the gods — he had no plan to handle it. Programs face a similar challenge. When a program assumes its input is always valid and never plans for the unexpected, it too is left without a handler.',
-    story: `In the traditional account associated with many South and East Indian Dasara observances, Mahishasura — the buffalo demon — obtained a powerful boon. Convinced that no man or god could ever defeat him, he allowed this certainty to become his weakness.
+      'At the festival registration desk, a visitor arrives eager to book all nine days of the festival. When the system asks for the number of days, the visitor accidentally types the word "nine" instead of the number 9. Before we see the code, what do you think should happen when a program receives an input it cannot understand? A resilient program should detect the problem and respond gracefully instead of crashing.',
+    story: `A visitor arrives at the festival registration desk, eager to book passes for all nine days of the Navratri festival leading up to Vijayadashami.
 
-His arrogance was not in his strength, but in his refusal to plan for the unexpected. He had no strategy for anything outside his assumptions.
+The registration system asks: "Enter the number of days you wish to attend:"
 
-When the gods, overwhelmed by his power, united their divine energies and manifested Goddess Durga, Mahishasura faced something entirely outside his plan. He had no handler for this situation.
+In a rush, the visitor accidentally types the word "nine" instead of the number 9.
 
-The festival information system you are helping to build faces its own version of this problem.`,
+Before we see the actual error in code, what do you think should happen when a program receives an input it cannot understand?`,
     scenePrediction: {
       prompt:
-        'The festival system receives a visitor input and tries to process it. Before we look at the code, what do you think should happen when a program receives an input it cannot understand?',
+        'The visitor entered "nine" instead of 9. What should a well-designed program do when it receives an input it cannot understand?',
       options: [
         { id: 'a', text: 'The program should immediately stop and crash.' },
         { id: 'b', text: 'The program should silently ignore the unexpected input.' },
@@ -117,10 +117,10 @@ The festival information system you are helping to build faces its own version o
       ],
       bestAnswer: 'c',
       explanations: {
-        a: 'Crashing does signal a problem, but it ends the experience for the visitor. A well-designed system catches the problem and continues helping.',
-        b: 'Silently ignoring the input could produce wrong results or leave the system in an invalid state — often worse than crashing.',
-        c: 'Exactly. A resilient program detects that something unexpected has happened and responds with a clear, graceful message instead of crashing or hiding the problem. This is what exception handling enables.',
-        d: 'Programs can describe the kinds of problems they expect to encounter — and respond to each specifically. Python\'s exception system is built for exactly this.',
+        a: 'Crashing signals a problem, but it completely breaks the experience for the visitor at the registration desk.',
+        b: 'Silently ignoring the input could cause incorrect bookings or corrupted records—often worse than crashing.',
+        c: 'Exactly. A resilient program detects that something unexpected has happened and responds with a helpful, graceful message instead of crashing or hiding the problem. This is what exception handling enables.',
+        d: 'Programs can anticipate the types of inputs they receive and handle unexpected formats specifically. Python exception handling is designed for this.',
       },
     },
   },
@@ -134,23 +134,21 @@ The festival information system you are helping to build faces its own version o
     type: 'concept-challenge',
     chapterNum: 3,
     eyebrow: 'The Story · Chapter II + Python Concept: ValueError',
-    title: 'Nine Nights — and an Invalid Input',
+    title: 'What is a ValueError?',
     narration:
-      'In the traditional account, Goddess Durga\'s nine-night battle with Mahishasura is commemorated during Navratri — nine nights of worship, music, and dance. Our festival information system needs to read how many days remain until the festival. A visitor types the word "nine" instead of the number 9. When Python tries to convert the string "nine" into an integer, it raises a ValueError. This is not a bug in the program\'s logic — it is Python saying: I cannot do what you asked with this input.',
-    story: `Navratri — literally "nine nights" — is observed across India before Vijayadashami. In many traditions, each night honours one of nine forms of Goddess Durga. By the tenth day, Vijayadashami, her victory is celebrated.
+      'Continuing from the registration desk, our computer system now attempts to convert the visitor\'s input into a number using Python\'s int function. When Python tries to convert the word "nine" into an integer, it cannot parse it as digits, so it raises a ValueError. Because the exception stops execution immediately, the print statement that follows never runs.',
+    story: `At the festival registration desk, the computer stored the visitor's input in days_input = "nine".
 
-The festival information system is asked: how many days remain until the festival?
+To calculate bookings and schedules, the registration program needs a numerical integer, so it calls int(days_input).
 
-A visitor types their answer: the word "nine."
-
-The system attempts to process this — and encounters something Python calls an exception.`,
+When Python encounters English letters instead of numeric digits, normal execution cannot proceed.`,
     codeProblem: {
       title: 'What happens when Python runs this?',
       code: `days_input = "nine"
 days = int(days_input)
 print(f"Festival in {days} days!")`,
       question:
-        'Python tries to convert the string "nine" into an integer. What happens?',
+        'Python tries to convert the string "nine" into an integer using int(days_input). What happens?',
       options: [
         { id: 'a', text: 'Python converts it to 9 automatically.' },
         { id: 'b', text: 'Python raises a ValueError.' },
@@ -159,26 +157,24 @@ print(f"Festival in {days} days!")`,
       ],
       correctId: 'b',
       explanations: {
-        a: 'Python does not guess at meaning. It cannot convert the word "nine" to an integer — it would need "9" (the digit). Attempting the impossible conversion raises an exception.',
-        b: 'Correct. int("nine") raises a ValueError: invalid literal for int() with base 10: \'nine\'. Python is telling you: I cannot convert this string to an integer.',
-        c: 'A SyntaxError means the code itself is not valid Python syntax. The code here is syntactically correct — it runs, but then fails at runtime when int() cannot do its job.',
-        d: 'Python does not fall through to print when the conversion fails. The exception interrupts normal execution at the int() call.',
+        a: 'Python does not interpret English words as numbers. int() only parses numeric digit characters like "9". It cannot guess that the letters n-i-n-e mean the number 9.',
+        b: 'Correct! int("nine") raises a ValueError: invalid literal for int() with base 10: \'nine\'. The string contains letters, not digits, so the conversion fails.',
+        c: 'A SyntaxError happens when code breaks Python grammar rules before running. This code is grammatically correct Python, but fails at runtime when int() cannot parse the value.',
+        d: 'Python stops executing the moment the exception is raised on Line 2. It never reaches the print statement on Line 3.',
       },
       exceptionTrace: [
-        { line: 1, code: 'days_input = "nine"', status: 'ok',        note: 'Assignment succeeds. days_input now holds the string "nine".' },
-        { line: 2, code: 'days = int(days_input)', status: 'raises',  note: 'int("nine") raises ValueError — "nine" cannot be converted to an integer.' },
-        { line: 3, code: 'print(...)',            status: 'skipped', note: 'This line is never reached. The exception interrupted execution.' },
+        { line: 1, code: 'days_input = "nine"', status: 'ok',        note: 'Normal: String "nine" assigned to days_input.' },
+        { line: 2, code: 'days = int(days_input)', status: 'raises',  note: 'ValueError: "nine" has letters, not digits. int() cannot convert it.' },
+        { line: 3, code: 'print(f"Festival in {days} days!")', status: 'skipped', note: 'Skipped: Execution halted on Line 2. This print line never runs.' },
       ],
     },
     conceptIntro: {
-      title: 'What is an Exception?',
+      title: 'Why did ValueError happen?',
       body: `An exception is Python's way of saying: something unexpected happened while the program was running, and I cannot continue normally.
 
-When int("nine") is called, Python tries to parse the string as a number. It cannot. Rather than producing a wrong result, Python raises a ValueError — a signal that the value provided was not usable for the requested operation.
+When int("nine") is called, Python tries to parse the string as digits. It cannot. Rather than producing a wrong result, Python raises a ValueError — a signal that the value provided was not usable for integer conversion.
 
-The program stops at the line that raised the exception. Any code after that line — in the same block — is skipped.
-
-An exception is not a syntax error. The code is correct Python. The problem is what happened when it ran.`,
+The program stops at the line that raised the exception. Any code after that line in the same block is skipped.`,
     },
   },
 

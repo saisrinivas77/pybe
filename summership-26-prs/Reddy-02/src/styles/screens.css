@@ -626,10 +626,281 @@
   font-size: 0.95rem;
   color: var(--clr-text-primary);
 }
+.reveal-val.val-alert {
+  color: var(--clr-vermilion);
+  font-weight: 600;
+}
 .reveal-arrow {
   font-size: 1.6rem;
   color: var(--clr-accent);
   font-weight: bold;
+}
+
+/* ── Chapter 2 & 3 Story Context & Kiosk Styling ── */
+.pybe-story-context-card {
+  background: #FFFFFF;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-xl);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.story-context-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.story-context-tag {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--clr-accent);
+}
+
+.story-context-badge {
+  font-size: 0.74rem;
+  font-weight: 600;
+  background: var(--clr-surface-raise);
+  border: 1px solid var(--clr-border-subtle);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  color: var(--clr-text-secondary);
+}
+
+.story-context-status {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--clr-saffron);
+  background: var(--clr-saffron-light);
+  border: 1px solid #FCD34D;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.story-context-text {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--clr-text-secondary);
+  margin: 0;
+}
+
+.story-context-sub {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--clr-text-muted);
+  margin: 0;
+}
+
+/* ── Kiosk Terminal Preview ── */
+.kiosk-terminal-preview {
+  background: #1E2320;
+  border: 1px solid #333C36;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: 4px 0;
+}
+
+.terminal-header-bar {
+  background: #141715;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #282F2A;
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.td-red { background: #FF5F56; }
+.td-yellow { background: #FFBD2E; }
+.td-green { background: #27C93F; }
+
+.terminal-title {
+  font-family: var(--font-code);
+  font-size: 0.74rem;
+  color: #8C9990;
+  letter-spacing: 0.04em;
+}
+
+.terminal-body {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-code);
+  font-size: 0.9rem;
+}
+
+.terminal-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.terminal-prompt {
+  color: var(--clr-accent);
+  font-weight: 700;
+}
+
+.terminal-msg {
+  color: #D1D5DB;
+}
+
+.terminal-label {
+  color: #9CA3AF;
+}
+
+.terminal-input-val {
+  background: rgba(217, 119, 6, 0.25);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.terminal-blinking-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background: #FBBF24;
+  animation: blinkCursor 1s infinite;
+}
+
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Story Transition Box (Connecting Page 2 & Page 3) ── */
+.transition-narrative-card {
+  background: #FFFDF5;
+  border: 1.5px solid #F3DCAC;
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  margin-top: 6px;
+  width: 100%;
+}
+
+.transition-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--clr-saffron);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.transition-narrative-text {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #4B3814;
+  margin: 0;
+}
+
+/* ── Concept Breakdown Cards (Page 3) ── */
+.pybe-concept-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #FFFFFF;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+}
+
+.concept-breakdown-title {
+  font-family: var(--font-story);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--clr-text-primary);
+  margin: 0;
+}
+
+.concept-breakdown-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.breakdown-item {
+  background: var(--clr-surface-raise);
+  border: 1px solid var(--clr-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.breakdown-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--clr-text-primary);
+}
+
+.breakdown-desc {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--clr-text-secondary);
+  margin: 0;
+}
+
+.compare-mini-box {
+  background: var(--clr-surface-code);
+  border: 1px solid #E5DCC5;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.compare-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+}
+
+.chip-ok {
+  color: var(--clr-accent);
+  font-weight: 600;
+}
+
+.chip-err {
+  color: var(--clr-vermilion);
+  font-weight: 600;
 }
 
 /* ── Screen 3: Code Card & Trace List ── */
